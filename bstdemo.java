@@ -32,15 +32,52 @@ class BinarySearchTree{
 
     void delete(int key){
         MyNode ptr = root;
+        MyNode prev = null;
+        int flag = 0;
         while(key!=ptr.data){
+            prev = ptr;
             if(key<ptr.data){
                 ptr = ptr.left;
+                flag = 1;
             }
             else{
                 ptr = ptr.right;
+                flag = 2;
             }
         }
-        
+        if(ptr.left==null && ptr.right==null){
+            if(flag==1)
+                prev.left = null;
+            else if(flag==2)
+                prev.right = null;
+        }
+        else if(ptr.left==null){
+            if(flag==1){
+                prev.left = ptr.right;
+            }
+            else if(flag==2){
+                prev.right = ptr.right;
+            }
+        }
+        else if(ptr.right==null){
+            if(flag==1){
+                prev.left = ptr.left;
+            }
+            else if(flag==2){
+                prev.right = ptr.left;
+            }
+        }
+        else{
+            MyNode qtr = ptr.right;
+            while(qtr.left!=null){
+                prev = qtr;
+                qtr = qtr.left;
+            }
+            int temp = qtr.data;
+            qtr.data = ptr.data;
+            ptr.data = temp;
+            prev.left = null;
+        }
     }
 
     void insert(int data){
